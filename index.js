@@ -5,20 +5,16 @@ const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers')
 const {MONGODB} = require('./config')
 
-require('dotenv').config()
-
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({req}) => ({ req })
-
 });
 
-mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Mongodb connected");
         return server.listen({port: 5000});
     }).then(res =>{
         console.log(`Server running at ${res.url}`);
     })
-
